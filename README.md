@@ -1,63 +1,80 @@
-# 📝 Assignment: Database Design and Normalization
+Database Design & Normalization – Week 7 Assignment
+Overview
 
-## 🎯 **Learning Objectives**
-* 🛠️ **Understand the principles of good database design** and **normalization**.
-* 💡 **Apply normalization techniques** to improve database structure and efficiency.
-* 🔍 **Learn First, Second, and Third Normal Forms** (1NF, 2NF, 3NF) to eliminate redundancy and optimize data storage.
+This assignment focuses on improving database structure through normalization. The goal is to understand and apply 1NF, 2NF, and 3NF principles to remove redundancy, eliminate partial dependencies, and ensure efficient data organization.
 
----
+The assignment requires transforming poorly structured tables into properly normalized versions using SQL queries.
 
-## 📋 **What You'll Need**
-* 💻 A computer with internet access.
-* ✍️ A code editor (e.g., Visual Studio Code).
-* 🖥️ MySQL Workbench or another SQL database environment.
+Files Included
 
----
+answers.sql – Contains all SQL queries for Question 1 and Question 2.
 
+README.md – Explains the database design concepts and summarizes the solutions.
 
-## 📝 Submission Instructions  
-📂 Write all your SQL queries in the **answers.sql** file.  
-✍️ Answer each question concisely and make sure your queries are clear and correct.  
-🗣️ Structure your responses clearly, and use comments if necessary to explain your approach.
+Learning Objectives
 
---- 
+Apply First Normal Form (1NF) to eliminate repeating groups.
 
-## 📚 Assignment Questions
+Apply Second Normal Form (2NF) to remove partial dependencies.
 
----
+Understand how normalization improves database integrity and structure.
 
-### Question 1 Achieving 1NF (First Normal Form) 🛠️
-Task:
-- You are given the following table **ProductDetail**:
+Question 1 – Achieving 1NF
 
-| OrderID | CustomerName  | Products                        |
-|---------|---------------|---------------------------------|
-| 101     | John Doe      | Laptop, Mouse                   |
-| 102     | Jane Smith    | Tablet, Keyboard, Mouse         |
-| 103     | Emily Clark   | Phone                           |
+The original table contains a Products column with multiple comma-separated values, violating 1NF.
 
+You must transform:
 
-- In the table above, the **Products column** contains multiple values, which violates **1NF**.
-- **Write an SQL query** to transform this table into **1NF**, ensuring that each row represents a single product for an order
+OrderID	CustomerName	Products
+101	John Doe	Laptop, Mouse
+102	Jane Smith	Tablet, Keyboard, Mouse
+103	Emily Clark	Phone
 
---- 
+Into a structure where each row contains only one product.
 
-### Question 2 Achieving 2NF (Second Normal Form) 🧩
+The SQL solution in answers.sql:
 
-- You are given the following table **OrderDetails**, which is already in **1NF** but still contains partial dependencies:
+Splits the multi-valued product column.
 
-| OrderID | CustomerName  | Product      | Quantity |
-|---------|---------------|--------------|----------|
-| 101     | John Doe      | Laptop       | 2        |
-| 101     | John Doe      | Mouse        | 1        |
-| 102     | Jane Smith    | Tablet       | 3        |
-| 102     | Jane Smith    | Keyboard     | 1        |
-| 102     | Jane Smith    | Mouse        | 2        |
-| 103     | Emily Clark   | Phone        | 1        |
+Produces one row per product per order.
 
-- In the table above, the **CustomerName** column depends on **OrderID** (a partial dependency), which violates **2NF**. 
+Question 2 – Achieving 2NF
 
-- Write an SQL query to transform this table into **2NF** by removing partial dependencies. Ensure that each non-key column fully depends on the entire primary key.
+The table contains a partial dependency:
+CustomerName depends only on OrderID, not on the full composite key (OrderID + Product).
 
----
-Good luck 🚀
+You must normalize:
+
+OrderID	CustomerName	Product	Quantity
+101	John Doe	Laptop	2
+101	John Doe	Mouse	1
+102	Jane Smith	Tablet	3
+102	Jane Smith	Keyboard	1
+102	Jane Smith	Mouse	2
+103	Emily Clark	Phone	1
+
+The SQL solution in answers.sql:
+
+Separates customer information into a dedicated Orders table.
+
+Creates a proper OrderItems table holding product and quantity details.
+
+Ensures all non-key attributes depend on the full primary key.
+
+How to Run
+
+Open MySQL Workbench or any SQL environment.
+
+Import or copy the contents of answers.sql.
+
+Run each section of SQL step by step.
+
+Verify that the resulting tables match the normalized structures.
+
+Notes
+
+Queries are written to be readable and easy to modify.
+
+Always test SQL in a clean database/schema to avoid conflicts.
+
+This assignment demonstrates practical normalization processes used in real-world systems.
